@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    run: nginx
+  name: nginx
+spec:
+  containers:
+  - image: nginx:1.26
+    name: nginx
+  - image: busybox:1.28
+    name: busybox
+    command:
+      - sleep
+      - "3600"
+  restartPolicy: Always
