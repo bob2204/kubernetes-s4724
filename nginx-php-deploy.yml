@@ -20,29 +20,6 @@ spec:
         ports:
           - name: http
             containerPort: 80
-        env:
-          - name: STAGE
-            value: Kubernetes
-          - name: JOURS
-            value: "5"
-          - name: NODEIP
-            valueFrom:
-              fieldRef:
-                fieldPath: status.hostIP
-          - name: NAMESPACE
-            valueFrom:
-              fieldRef:
-                fieldPath: metadata.namespace
-          - name: URL
-            valueFrom:
-              configMapKeyRef:
-                name: nginx
-                key: NGINX_URL
-          - name: PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: nginx
-                key: PASSWORD
         readinessProbe:
           httpGet:
             path: /index.html
@@ -55,5 +32,24 @@ spec:
             port: 80
           periodSeconds: 10
           failureThreshold: 2
+        volumeMounts:
+          - name: data
+            mountPath: /usr/share/nginx/html
+            subPath: site-nginx
+          - name: conf-nginx
+            mountPath: /etc/nginx/conf.d
+
       - image: php:8.2-fpm
         name: php
+        volumeMounts:
+          - name: data
+            mountPath: /var/www/html
+            subPath: site-nginx
+      volumes:
+        - name: data
+          hostPath:
+            path: /data
+            type: Directory
+        - name: conf-nginx
+          configMap:
+            name: nginx
