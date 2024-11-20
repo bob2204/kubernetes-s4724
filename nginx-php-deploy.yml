@@ -43,5 +43,17 @@ spec:
               secretKeyRef:
                 name: nginx
                 key: PASSWORD
+        readinessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 3
+          failureThreshold: 2
+        livenessProbe:
+          httpGet:
+            path: /index.html
+            port: 80
+          periodSeconds: 10
+          failureThreshold: 2
       - image: php:8.2-fpm
         name: php
