@@ -20,6 +20,12 @@ spec:
           envFrom:
             - configMapRef:
                 name: hello
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 80
+            periodSeconds: 2
+            failureThreshold: 2
           ports:
             - name: http
               containerPort: 80
