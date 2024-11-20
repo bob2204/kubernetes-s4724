@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mariadb
+  name: mariadb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - image: mariadb:10.8
+        name: mariadb
+        env:
+          - name: MARIADB_ROOT_PASSWORD_FILE
+            value: /tmp/mariadb/mariadb-password.txt
+        volumeMounts:
+          - name: datadir
+            mountPath: /var/lib/mysql
+          - name: password
+            mountPath: /tmp/mariadb
+      volumes:
+        - name: datadir
+          hostPath:
+            path: /data/datadir
+            type: DirectoryOrCreate
+        - name: password
+          secret:
+            secretName: mariadb
+      nodeName: k31-worker3
