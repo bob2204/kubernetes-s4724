@@ -1,0 +1,8 @@
+apiVersion: v1
+data:
+  NGINX_URL: https://nginx.stage.local
+  REPLICAS: "5"
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: nginx
