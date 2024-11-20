@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: busy
+  name: busy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busy
+  template:
+    metadata:
+      labels:
+        app: busy
+    spec:
+      containers:
+      - image: busybox:1.28
+        name: busybox
+        volumeMounts:
+          - name: data
+            mountPath: /usr/local/data
+        command:
+          - sleep
+          - "3600"
+      volumes:
+        - name: data
+          hostPath:
+            path: /data
+            type: Directory
+      nodeName: k31-worker2
