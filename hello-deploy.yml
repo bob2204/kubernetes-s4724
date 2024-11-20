@@ -17,3 +17,22 @@ spec:
       containers:
       - image: bob2606/hello-http:0.8.25
         name: hello-http
+        env:
+          - name: PORT
+            valueFrom:
+              configMapKeyRef:
+                name: hello
+                key: PORT
+          - name: VERSION
+            valueFrom:
+              configMapKeyRef:
+                name: hello
+                key: VERSION
+          - name: MSG
+            valueFrom:
+              configMapKeyRef:
+                name: hello
+                key: MSG
+        ports:
+          - name: http
+            containerPort: 80
