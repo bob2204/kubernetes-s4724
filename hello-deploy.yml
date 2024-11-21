@@ -1,14 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  annotations:
+    kubernetes.io/change-cause: test-1
+    fabien/toto: test-1
   labels:
     app: hello
   name: hello
 spec:
-  replicas: 3
+  replicas: 30
   selector:
     matchLabels:
       app: hello
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   template:
     metadata:
       labels:
@@ -17,6 +24,9 @@ spec:
       containers:
         - image: bob2606/hello-http:0.8.25
           name: hello-http
+          env:
+            - name: STAGE
+              value: K9S
           envFrom:
             - configMapRef:
                 name: hello
