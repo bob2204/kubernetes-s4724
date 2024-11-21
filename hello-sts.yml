@@ -15,6 +15,24 @@ spec:
       labels:
         app: hello
     spec:
+      initContainers:
+        - image: busybox:1.28
+          name: busy
+          command:
+            - /bin/sh
+          args:
+            - -c
+            - |
+              idx=$(hostname|cut -d- -f2)
+              if [ $idx = "0" ]
+              then
+                echo "Principal" > /tmp/status
+              else
+                echo "Secondaire n°$idx" > /tmp/status
+              fi
+          volumeMounts:
+            - name: status
+              mountPath: /tmp
       containers:
         - image: bob2606/hello-http:0.8.25
           name: hello-http
@@ -26,3 +44,10 @@ spec:
           ports:
             - name: http
               containerPort: 80
+          volumeMounts:
+            - name: status
+              mountPath: /var/lib/hello-http/
+
+      volumes:
+        - name: status
+          emptyDir:
