@@ -8,12 +8,12 @@ metadata:
 spec:
   ports:
   - name: 80-8080
-    nodePort: 32000
     port: 80
     protocol: TCP
     targetPort: http
   selector:
     app: hello
-  type: LoadBalancer
+  type: ClusterIP
+  clusterIP: None
 status:
   loadBalancer: {}
