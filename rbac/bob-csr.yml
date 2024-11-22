@@ -4,7 +4,7 @@ metadata:
   name: bob
 spec:
   request: 
-  signerName: kubernetes.io/kube-api-server-client
+  signerName: kubernetes.io/kube-apiserver-client
   expirationSeconds: 86400
   usages:
     - client auth
