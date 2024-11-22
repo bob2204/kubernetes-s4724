@@ -1,0 +1,22 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: hello-25-26-allow-only-from-labo
+  namespace: labo
+spec:
+  podSelector:
+    matchExpressions:
+      - key: app
+        operator: In
+        values:
+          - hello-25
+          - hello-26
+  ingress:
+    - from:
+      - podSelector:
+          matchLabels:
+            np: allowed
+      - namespaceSelector:
+          matchExpressions:
+            - key: dummy
+              operator: DoesNotExist
